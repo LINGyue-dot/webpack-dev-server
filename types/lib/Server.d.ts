@@ -1,5 +1,10 @@
 /// <reference types="node" />
 export = Server;
+/**
+ * 使用：
+ * const compiler = webpack(config)
+ * const devServer = new WebpackDevServer(serverConfig, compiler);
+ */
 declare class Server {
   static get cli(): {
     readonly getArguments: () => {
@@ -658,6 +663,10 @@ declare class Server {
         configs: (
           | {
               description: string;
+              /**
+               * @private
+               * @type {string | undefined}
+               */
               multiple: boolean;
               path: string;
               type: string;
@@ -665,16 +674,9 @@ declare class Server {
             }
           | {
               description: string;
-              /**
-               * @private
-               * @type {RequestHandler[]}
-               */
               multiple: boolean;
               path: string;
               type: string;
-              /**
-               * @type {Socket[]}
-               */
             }
         )[];
         description: string;
@@ -686,6 +688,10 @@ declare class Server {
           type: string;
           multiple: boolean;
           description: string;
+          /**
+           * @param {string} URL
+           * @returns {boolean}
+           */
           path: string;
         }[];
         description: string;
@@ -710,6 +716,10 @@ declare class Server {
           multiple: boolean;
           description: string;
           negatedDescription: string;
+          /**
+           * @param {"v4" | "v6"} family
+           * @returns {Promise<string | undefined>}
+           */
           path: string;
         }[];
         description: string;
@@ -781,9 +791,6 @@ declare class Server {
         simpleType: string;
         multiple: boolean;
       };
-      /**
-       * @type {string | undefined}
-       */
       "https-ca": {
         configs: {
           type: string;
@@ -792,6 +799,11 @@ declare class Server {
           path: string;
         }[];
         description: string;
+        /**
+         * @private
+         * @param {Compiler} compiler
+         * @returns bool
+         */
         simpleType: string;
         multiple: boolean;
       };
@@ -831,8 +843,8 @@ declare class Server {
       "https-cert": {
         configs: {
           type: string;
-          multiple: boolean;
-          /** @type {ClientConfiguration} */ description: string;
+          /** @type {string} */ multiple: boolean;
+          description: string;
           path: string;
         }[];
         description: string;
@@ -844,6 +856,7 @@ declare class Server {
           description: string;
           multiple: boolean;
           path: string;
+          /** @type {string} */
           type: string;
         }[];
         description: string;
@@ -892,7 +905,7 @@ declare class Server {
         }[];
         description: string;
         multiple: boolean;
-        /** @type {string} */ simpleType: string;
+        simpleType: string;
       };
       "https-passphrase": {
         configs: {
@@ -969,12 +982,6 @@ declare class Server {
         }[];
         description: string;
         simpleType: string;
-        /**
-         * prependEntry Method for webpack 4
-         * @param {any} originalEntry
-         * @param {any} newAdditionalEntries
-         * @returns {any}
-         */
         multiple: boolean;
       };
       "magic-html": {
@@ -998,17 +1005,16 @@ declare class Server {
               path: string;
             }
           | {
-              /** @type {any} */
               type: string;
               multiple: boolean;
-              /** @type {any} */ description: string;
+              description: string;
               negatedDescription: string;
               path: string;
             }
         )[];
         description: string;
         simpleType: string;
-        multiple: boolean;
+        /** @type {MultiCompiler} */ multiple: boolean;
       };
       "open-app": {
         configs: {
@@ -1024,7 +1030,7 @@ declare class Server {
       "open-app-name": {
         configs: {
           type: string;
-          multiple: boolean;
+          /** @type {MultiCompiler} */ multiple: boolean;
           description: string;
           path: string;
         }[];
@@ -1292,7 +1298,7 @@ declare class Server {
         }[];
         description: string;
         simpleType: string;
-        multiple: boolean;
+        /** @type {ServerOptions} */ multiple: boolean;
       };
       "static-public-path": {
         configs: {
@@ -1325,9 +1331,8 @@ declare class Server {
         }[];
         description: string;
         simpleType: string;
-        multiple: boolean /** @type {any} */;
+        multiple: boolean;
       };
-      /** @type {any} */
       "static-serve-index": {
         configs: {
           type: string;
@@ -2125,7 +2130,7 @@ declare class Server {
         link: string;
         cli: {
           negatedDescription: string;
-        };
+        } /** @type {Configuration} */;
       };
       HTTPS: {
         anyOf: (
@@ -2152,10 +2157,6 @@ declare class Server {
                     negatedDescription: string;
                   };
                 };
-                /**
-                 * @private
-                 * @type {string | undefined}
-                 */
                 ca: {
                   anyOf: (
                     | {
@@ -2237,6 +2238,10 @@ declare class Server {
                         instanceof?: undefined;
                       }
                     | {
+                        /**
+                         * @param {Host} hostname
+                         * @returns {Promise<string>}
+                         */
                         type: string;
                         items?: undefined;
                         instanceof?: undefined;
@@ -2419,12 +2424,11 @@ declare class Server {
           | {
               type: string;
               description: string;
-              /** @type {{ type: WebSocketServerConfiguration["type"], options: NonNullable<WebSocketServerConfiguration["options"]> }} */
               link: string;
               cli?: undefined;
             }
         )[];
-        description: string;
+        /** @type {ServerConfiguration} */ description: string;
         link: string;
       };
       Host: {
@@ -2454,7 +2458,7 @@ declare class Server {
             }
           | {
               enum: string[];
-              /** @type {string} */ type?: undefined;
+              type?: undefined;
               cli?: undefined;
             }
         )[];
@@ -2633,7 +2637,7 @@ declare class Server {
             }
         )[];
         description: string;
-        link: string;
+        /** @type {Object<string,string>} */ link: string;
       };
       Proxy: {
         anyOf: (
@@ -2664,7 +2668,7 @@ declare class Server {
         anyOf: {
           $ref: string;
         }[];
-        link: string;
+        /** @type {string} */ link: string;
         description: string;
       };
       ServerType: {
@@ -2678,7 +2682,7 @@ declare class Server {
       };
       ServerString: {
         type: string;
-        /** @type {string} */ minLength: number;
+        minLength: number;
         cli: {
           exclude: boolean;
         };
@@ -2688,6 +2692,7 @@ declare class Server {
         properties: {
           type: {
             anyOf: {
+              /** @type {MultiCompiler} */
               $ref: string;
             }[];
           };
@@ -2695,7 +2700,7 @@ declare class Server {
             $ref: string;
           };
         };
-        additionalProperties: boolean;
+        additionalProperties: boolean /** @type {MultiCompiler} */;
       };
       ServerOptions: {
         type: string;
@@ -2874,7 +2879,6 @@ declare class Server {
             )[];
             description: string;
           };
-          /** @type {NormalizedStatic} */
           pfx: {
             anyOf: (
               | {
@@ -3092,6 +3096,7 @@ declare class Server {
         type: string;
         minLength: number;
       };
+      /** @type {ServerConfiguration} */
       WebSocketServer: {
         anyOf: {
           $ref: string;
@@ -3117,6 +3122,7 @@ declare class Server {
               cli?: undefined;
             }
         )[];
+        /** @type {ServerOptions} */
         cli: {
           description: string;
         };
@@ -3144,7 +3150,7 @@ declare class Server {
       };
       WebSocketServerString: {
         type: string;
-        minLength: number;
+        /** @type {any} */ minLength: number;
       };
     };
     additionalProperties: boolean;
@@ -3283,10 +3289,28 @@ declare class Server {
     compiler: Compiler | MultiCompiler | Configuration
   );
   compiler: import("webpack").Compiler | import("webpack").MultiCompiler;
-  /**
-   * @type {ReturnType<Compiler["getInfrastructureLogger"]>}
-   * */
-  logger: ReturnType<Compiler["getInfrastructureLogger"]>;
+  logger: {
+    getChildLogger: (arg0: string | (() => string)) => any;
+    error(...args: any[]): void;
+    warn(...args: any[]): void;
+    info(...args: any[]): void;
+    log(...args: any[]): void;
+    debug(...args: any[]): void;
+    assert(assertion: any, ...args: any[]): void;
+    trace(): void;
+    clear(): void;
+    status(...args: any[]): void;
+    group(...args: any[]): void;
+    groupCollapsed(...args: any[]): void;
+    groupEnd(...args: any[]): void;
+    profile(label?: any): void;
+    profileEnd(label?: any): void;
+    time(label?: any): void;
+    timeLog(label?: any): void;
+    timeEnd(label?: any): void;
+    timeAggregate(label?: any): void;
+    timeAggregateEnd(label?: any): void;
+  };
   options: Configuration;
   /**
    * @type {FSWatcher[]}
@@ -3342,11 +3366,13 @@ declare class Server {
    */
   private setupProgressPlugin;
   /**
+   * 初始化以及开启 express http server
    * @private
    * @returns {Promise<void>}
    */
   private initialize;
   /**
+   * 创建一个 express 实例
    * @private
    * @returns {void}
    */
@@ -3360,6 +3386,7 @@ declare class Server {
    */
   private getStats;
   /**
+   * 监听编译成功以及编译失败
    * @private
    * @returns {void}
    */
@@ -3370,11 +3397,13 @@ declare class Server {
    */
   private stats;
   /**
+   * 请求头进行检测
    * @private
    * @returns {void}
    */
   private setupHostHeaderCheck;
   /**
+   * 设置 this.middleware = wdm 返回的中间件函数
    * @private
    * @returns {void}
    */
@@ -3393,6 +3422,7 @@ declare class Server {
     | null
     | undefined;
   /**
+   * 返回前端 webosocket 代码
    * @private
    * @returns {void}
    */
@@ -3408,11 +3438,13 @@ declare class Server {
    */
   private setupWatchFiles;
   /**
+   * 应用中间件
    * @private
    * @returns {void}
    */
   private setupMiddlewares;
   /**
+   * 创建服务，并收集 socket
    * @private
    * @returns {void}
    */
@@ -3596,7 +3628,6 @@ declare namespace Server {
     Configuration,
   };
 }
-type Compiler = import("webpack").Compiler;
 type Configuration = {
   ipc?: string | boolean | undefined;
   host?: string | undefined;
@@ -3675,6 +3706,7 @@ type ClientConnection = (
 };
 type Port = number | string | "auto";
 type Host = "local-ip" | "local-ipv4" | "local-ipv6" | string;
+type Compiler = import("webpack").Compiler;
 type MultiCompiler = import("webpack").MultiCompiler;
 declare class DEFAULT_STATS {
   private constructor();

@@ -2,8 +2,9 @@
 
 const target = document.querySelector("#target");
 
+// 这里自带 hot reload
 target.classList.add("pass");
-target.innerHTML = "Success!";
+target.innerHTML = "Fai!";
 
 // This results in a warning:
 if (!window) {

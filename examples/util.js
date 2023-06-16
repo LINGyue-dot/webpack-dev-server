@@ -30,6 +30,7 @@ module.exports = {
         res.sendFile(filename);
       });
     };
+    // no docs about this api ???
     const renderer = new marked.Renderer();
     const heading = renderer.heading;
     const markedOptions = {
